@@ -1,0 +1,35 @@
+{
+  "name": "project-fields",
+  "version": "1.0.0",
+  "description": "A GitHub Action to interact with project fields",
+  "main": "build/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "ncc build src/index.ts --minify --out build",
+    "lint": "gts lint",
+    "clean": "gts clean",
+    "fix": "gts fix",
+    "prepare": "husky install",
+    "posttest": "npm run lint",
+    "prebuild": "npm run clean"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EndBug/project-fields.git"
+  },
+  "author": "Federico Grandi <fgrandi30@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/EndBug/project-fields/issues"
+  },
+  "homepage": "https://github.com/EndBug/project-fields#readme",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@types/node": "^20.1.1",
+    "@vercel/ncc": "^0.36.1",
+    "gts": "^3.1.1",
+    "typescript": "^5.0.4"
+  }
+}
