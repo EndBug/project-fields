@@ -27,8 +27,11 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
+    "@actions/core": "^1.10.0",
+    "@actions/github": "^5.1.1",
     "@types/node": "^20.1.1",
     "@vercel/ncc": "^0.36.1",
+    "csv": "^6.3.0",
     "gts": "^3.1.1",
     "typescript": "^5.0.4"
   }

@@ -1,0 +1,14 @@
+query getProjectField($owner: String!, $projectId: Int!) {
+  repositoryOwner(login: $owner) {
+    ... on Organization {
+      projectV2(number: $projectId) {
+        id
+      }
+    }
+    ... on User {
+      projectV2(number: $projectId) {
+        id
+      }
+    }
+  }
+}

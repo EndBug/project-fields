@@ -1,0 +1,34 @@
+name: Project Fields
+description: A GitHub Action to interact with project fields
+
+inputs:
+  fields:
+    description: 'A comma-separated list of fields to get or update'
+    required: true
+  project_url:
+    description: 'The URL of the project'
+    required: true
+
+  github_token:
+    description: 'The GitHub token to use for authentication'
+    required: true
+    default: ${{ github.token }}
+  resource_url:
+    description: 'The URL of the issue/PR to get or update'
+    required: true
+    default: ${{ github.event.issue.html_url || github.event.pull_request.html_url }}
+  values:
+    description: 'A comma-separated list of values to update the fields with'
+    required: false
+
+outputs:
+  values:
+    description: 'The current values of the fields'
+
+runs:
+  using: node16
+  main: build/index.js
+
+branding:
+  icon: layout
+  color: gray-dark

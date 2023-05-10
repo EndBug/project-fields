@@ -1,0 +1,36 @@
+query getField($owner: String!, $projectNumber: Int!, $fieldName: String!) {
+  repositoryOwner(login: $owner) {
+    ... on Organization {
+      projectV2(number: $projectNumber) {
+        field(name: $fieldName) {
+          ... on ProjectV2FieldCommon {
+            id
+            dataType
+          }
+          ... on ProjectV2SingleSelectField {
+            options {
+              id
+              name
+            }
+          }
+        }
+      }
+    }
+    ... on User {
+      projectV2(number: $projectNumber) {
+        field(name: $fieldName) {
+          ... on ProjectV2FieldCommon {
+            id
+            dataType
+          }
+          ... on ProjectV2SingleSelectField {
+            options {
+              id
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+}
