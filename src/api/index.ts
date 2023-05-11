@@ -34,13 +34,13 @@ export class Octo {
 
     supportedQueries.forEach(query => {
       this.requests[query] = fs.readFileSync(
-        path.join(__dirname, './query', `${query}.graphql`),
+        path.join(__dirname, '../query', `${query}.graphql`),
         'utf8'
       );
     });
     supportedMutations.forEach(mutation => {
       this.requests[mutation] = fs.readFileSync(
-        path.join(__dirname, './mutation', `${mutation}.graphql`),
+        path.join(__dirname, '../mutation', `${mutation}.graphql`),
         'utf8'
       );
     });
