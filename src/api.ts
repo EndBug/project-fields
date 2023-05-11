@@ -118,7 +118,7 @@ export class Octo {
     'getField' | 'getFieldValues' | 'getItemId' | 'getProjectId',
     string
   >;
-  mutations: Record<'clearFieldValue' | 'setFieldValue', string>;
+  mutations: Record<'clearItemFieldValue' | 'setItemFieldValue', string>;
 
   constructor(token: string) {
     this.octokit = getOctokit(token);
@@ -129,8 +129,8 @@ export class Octo {
       getProjectId: this._readQuery('getProjectId'),
     };
     this.mutations = {
-      clearFieldValue: this._readMutation('clearFieldValue'),
-      setFieldValue: this._readMutation('setFieldValue'),
+      clearItemFieldValue: this._readMutation('clearItemFieldValue'),
+      setItemFieldValue: this._readMutation('setItemFieldValue'),
     };
   }
 
@@ -304,7 +304,7 @@ export class Octo {
   }
 
   async clearFieldValue(projectId: string, itemId: string, fieldId: string) {
-    await this.octokit.graphql(this.mutations.clearFieldValue, {
+    await this.octokit.graphql(this.mutations.clearItemFieldValue, {
       projectId,
       itemId,
       fieldId,
@@ -325,7 +325,7 @@ export class Octo {
       | {date: string}
       | {singleSelectOptionId: string}
   ) {
-    await this.octokit.graphql(this.mutations.setFieldValue, {
+    await this.octokit.graphql(this.mutations.setItemFieldValue, {
       projectId,
       itemId,
       fieldId,
