@@ -1,7 +1,7 @@
 import {getOctokit} from '@actions/github';
 import * as fs from 'fs';
 import * as path from 'path';
-import {ExcludeEmpty, checkType} from './utils';
+import {ExcludeEmpty, checkType} from '../utils';
 
 // #region Types
 export type FieldDataType =

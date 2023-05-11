@@ -1,4 +1,4 @@
 {
   "name": "GitHub API V4 GraphQL Schema",
-  "schemaPath": "./src/github.schema.json"
+  "schemaPath": "./src/api/github.schema.json"
 }
