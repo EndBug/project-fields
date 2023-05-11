@@ -1,12 +1,12 @@
-query getProjectField($owner: String!, $projectId: Int!) {
+query getProjectField($owner: String!, $number: Int!) {
   repositoryOwner(login: $owner) {
     ... on Organization {
-      projectV2(number: $projectId) {
+      projectV2(number: $number) {
         id
       }
     }
     ... on User {
-      projectV2(number: $projectId) {
+      projectV2(number: $number) {
         id
       }
     }
