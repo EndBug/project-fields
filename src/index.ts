@@ -75,7 +75,7 @@ const supportedDataTypes = [
             'Fields/values length mismatch. This should never happen.'
           );
 
-        if (Number.isNaN(Number(value)))
+        if (field.dataType === 'NUMBER' && Number.isNaN(Number(value)))
           throw new Error(
             `Field ${field.name} has data type ${field.dataType}, but the value is not a number.`
           );
