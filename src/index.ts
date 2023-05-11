@@ -80,6 +80,16 @@ const supportedDataTypes = [
             `Field ${field.name} has data type ${field.dataType}, but the value is not a number.`
           );
 
+        let singleSelectOptionId: string;
+        if (field.dataType === 'SINGLE_SELECT') {
+          const option = field.options.find(o => o.name === value);
+          if (!option)
+            throw new Error(
+              `Field ${field.name} has data type ${field.dataType}, but the value is not a valid option.`
+            );
+          singleSelectOptionId = option.id;
+        }
+
         const newValue:
           | Parameters<(typeof octokit)['setFieldValue']>[3]
           | undefined =
@@ -89,7 +99,7 @@ const supportedDataTypes = [
               }
             : field.dataType === 'SINGLE_SELECT'
             ? {
-                singleSelectOptionId: value,
+                singleSelectOptionId: singleSelectOptionId!,
               }
             : field.dataType === 'NUMBER'
             ? {
