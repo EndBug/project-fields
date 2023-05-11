@@ -11,7 +11,7 @@ import {
 } from './generated';
 
 type FieldValueNode = ExcludeEmpty<
-  Response<'getFieldValues'>['data']['resource']['projectItems']['nodes'][number]['fieldValues']['nodes'][number]
+  Response<'getFieldValues'>['resource']['projectItems']['nodes'][number]['fieldValues']['nodes'][number]
 >;
 
 type FieldsResult = Record<
@@ -79,7 +79,7 @@ export class Octo {
       fieldName,
     });
 
-    const field = response.data.repositoryOwner.projectV2.field;
+    const field = response.repositoryOwner.projectV2.field;
     if (!field)
       throw new Error(
         `Could not find field ${fieldName} in project ${projectOwner}/${projectNumber}`
@@ -102,7 +102,7 @@ export class Octo {
       resourceUrl,
     });
 
-    const projectNode = response.data.resource.projectItems.nodes.find(
+    const projectNode = response.resource.projectItems.nodes.find(
       node => node.project.id === projectId
     );
     if (!projectNode)
@@ -165,7 +165,7 @@ export class Octo {
       resourceUrl,
     });
 
-    const projectNode = response.data.resource.projectItems.nodes.find(
+    const projectNode = response.resource.projectItems.nodes.find(
       node => node.project.id === projectId
     );
     if (!projectNode)
@@ -188,7 +188,7 @@ export class Octo {
       number: projectNumber,
     });
 
-    return response.data.repositoryOwner.projectV2.id;
+    return response.repositoryOwner.projectV2.id;
   }
 
   async clearFieldValue(projectId: string, itemId: string, fieldId: string) {
