@@ -132,7 +132,13 @@ const supportedDataTypes = [
     core.endGroup();
 
     core.startGroup('Setting outputs...');
-    const results = inputs.fields.map(field => fieldRecords[field]);
+    const results = inputs.fields.map(field => {
+      if (fieldRecords[field].unsupported)
+        throw new Error(
+          `Field "${field}" has an unsupported data type: ${fieldRecords[field].type}`
+        );
+      return fieldRecords[field];
+    });
     const csv = stringifyCSVArray(results.map(r => r.value));
     core.info('CSV output generated correctly.');
     debug(csv);

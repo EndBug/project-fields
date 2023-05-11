@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import {ExcludeEmpty, checkType, debug} from '../utils';
 import {
+  FieldDataType,
   Request,
   RequestParams,
   Response,
@@ -16,11 +17,18 @@ type FieldValueNode = ExcludeEmpty<
 
 type FieldsResult = Record<
   string,
-  {
-    value: string | number | undefined;
-    type: 'TEXT' | 'SINGLE_SELECT' | 'NUMBER' | 'DATE';
-    id: string;
-  }
+  | {
+      value: string | number | undefined;
+      type: 'TEXT' | 'SINGLE_SELECT' | 'NUMBER' | 'DATE';
+      id: string;
+      unsupported?: false;
+    }
+  | {
+      value?: never;
+      id: string;
+      type: FieldDataType;
+      unsupported: true;
+    }
 >;
 
 export class Octo {
@@ -147,6 +155,11 @@ export class Octo {
           };
           break;
         default:
+          result[node.field.name] = {
+            id: node.field.id,
+            unsupported: true,
+            type: node.field.dataType,
+          };
           break;
       }
     });
