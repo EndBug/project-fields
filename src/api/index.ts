@@ -1,7 +1,7 @@
 import {getOctokit} from '@actions/github';
 import * as fs from 'fs';
 import * as path from 'path';
-import {ExcludeEmpty, checkType} from '../utils';
+import {ExcludeEmpty, checkType, debug} from '../utils';
 import {
   Request,
   RequestParams,
@@ -46,11 +46,19 @@ export class Octo {
     });
   }
 
-  private _request<T extends Request>(
+  private async _request<T extends Request>(
     req: T,
     params: RequestParams<T>
   ): Promise<Response<T>> {
-    return this.octokit.graphql(this.requests[req], params);
+    debug(`Requesting ${req} with params: ${JSON.stringify(params)}`);
+
+    const res: Response<T> = await this.octokit.graphql(
+      this.requests[req],
+      params
+    );
+
+    debug(`Response: ${JSON.stringify(res)}`);
+    return res;
   }
 
   /**
