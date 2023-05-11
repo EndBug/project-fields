@@ -165,6 +165,11 @@ export class Octo {
       resourceUrl,
     });
 
+    if (!response.resource)
+      throw new Error(
+        `Could not find resource ${resourceUrl}. Check that your token has access to the resource.`
+      );
+
     const projectNode = response.resource.projectItems.nodes.find(
       node => node.project.id === projectId
     );
