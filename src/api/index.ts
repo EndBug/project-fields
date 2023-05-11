@@ -147,7 +147,9 @@ export class Octo {
           };
           break;
         default:
-          break;
+          throw new Error(
+            `Field ${node.field.name} has unsupported data type ${node.field.dataType}`
+          );
       }
     });
 
