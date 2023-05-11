@@ -16,6 +16,7 @@ query getFieldValues($resourceUrl: URI!) {
                   ... on ProjectV2FieldCommon {
                     name
                     fieldId: id
+                    dataType
                   }
                 }
               }
@@ -51,6 +52,7 @@ query getFieldValues($resourceUrl: URI!) {
                   ... on ProjectV2FieldCommon {
                     name
                     fieldId: id
+                    dataType
                   }
                 }
               }
