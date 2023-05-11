@@ -5,14 +5,13 @@ inputs:
   fields:
     description: 'A comma-separated list of fields to get or update'
     required: true
+  github_token:
+    description: 'The GitHub token to use for authentication'
+    required: true
   project_url:
     description: 'The URL of the project'
     required: true
 
-  github_token:
-    description: 'The GitHub token to use for authentication'
-    required: true
-    default: ${{ github.token }}
   resource_url:
     description: 'The URL of the issue/PR to get or update'
     required: true
