@@ -1,4 +1,4 @@
-query getFieldValues($resourceUrl: URI!) {
+query getItemId($resourceUrl: URI!) {
   resource(url: $resourceUrl) {
     ... on Issue {
       id

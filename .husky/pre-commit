@@ -2,4 +2,4 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 npm run build
-git add build
+git add build src/api/generated.ts

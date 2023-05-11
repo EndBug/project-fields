@@ -2,79 +2,16 @@ import {getOctokit} from '@actions/github';
 import * as fs from 'fs';
 import * as path from 'path';
 import {ExcludeEmpty, checkType} from '../utils';
+import {
+  Request,
+  RequestParams,
+  Response,
+  supportedMutations,
+  supportedQueries,
+} from './generated';
 
-// #region Types
-export type FieldDataType =
-  | 'ASSIGNEES'
-  | 'LINKED_PULL_REQUESTS'
-  | 'REVIEWERS'
-  | 'LABELS'
-  | 'MILESTONE'
-  | 'REPOSITORY'
-  | 'TITLE'
-  | 'TEXT'
-  | 'SINGLE_SELECT'
-  | 'NUMBER'
-  | 'DATE'
-  | 'ITERATION'
-  | 'TRACKS'
-  | 'TRACKED_BY';
-
-interface RawGetFieldResponse {
-  data: {
-    repositoryOwner: {
-      projectV2: {
-        field:
-          | {
-              id: string;
-              dataType: 'SINGLE_SELECT';
-              options: {
-                id: string;
-                name: string;
-              }[];
-            }
-          | {
-              id: string;
-              dataType: Exclude<FieldDataType, 'SINGLE_SELECT'>;
-            };
-      };
-    };
-  };
-}
-
-interface RawGetFieldValuesResponse {
-  data: {
-    resource: {
-      projectItems: {
-        nodes: {
-          itemId: string;
-          project: {
-            id: string;
-          };
-          fieldValues: {
-            totalCount: number;
-            nodes: (
-              | {}
-              | {
-                  field: {
-                    name: string;
-                    id: string;
-                    dataType: FieldDataType;
-                  };
-                  text?: string;
-                  name?: string;
-                  number?: number;
-                  date?: string;
-                }
-            )[];
-          };
-        }[];
-      };
-    };
-  };
-}
 type FieldValueNode = ExcludeEmpty<
-  RawGetFieldValuesResponse['data']['resource']['projectItems']['nodes'][number]['fieldValues']['nodes'][number]
+  Response<'getFieldValues'>['data']['resource']['projectItems']['nodes'][number]['fieldValues']['nodes'][number]
 >;
 
 type FieldsResult = Record<
@@ -86,74 +23,34 @@ type FieldsResult = Record<
   }
 >;
 
-interface RawGetItemIdResponse {
-  data: {
-    resource: {
-      projectItems: {
-        nodes: {
-          itemId: string;
-          project: {
-            id: string;
-          };
-        }[];
-      };
-    };
-  };
-}
-
-interface RawGetProjectIdResponse {
-  data: {
-    repositoryOwner: {
-      projectV2: {
-        id: string;
-      };
-    };
-  };
-}
-// #endregion
-
 export class Octo {
   octokit;
-  queries: Record<
-    'getField' | 'getFieldValues' | 'getItemId' | 'getProjectId',
-    string
-  >;
-  mutations: Record<'clearItemFieldValue' | 'setItemFieldValue', string>;
+  requests: Record<Request, string>;
 
   constructor(token: string) {
     this.octokit = getOctokit(token);
-    this.queries = {
-      getField: this._readQuery('getField'),
-      getFieldValues: this._readQuery('getFieldValues'),
-      getItemId: this._readQuery('getItemId'),
-      getProjectId: this._readQuery('getProjectId'),
-    };
-    this.mutations = {
-      clearItemFieldValue: this._readMutation('clearItemFieldValue'),
-      setItemFieldValue: this._readMutation('setItemFieldValue'),
-    };
+
+    this.requests = {} as Record<Request, string>;
+
+    supportedQueries.forEach(query => {
+      this.requests[query] = fs.readFileSync(
+        path.join(__dirname, './query', `${query}.graphql`),
+        'utf8'
+      );
+    });
+    supportedMutations.forEach(mutation => {
+      this.requests[mutation] = fs.readFileSync(
+        path.join(__dirname, './mutation', `${mutation}.graphql`),
+        'utf8'
+      );
+    });
   }
 
-  /**
-   * Reads a query from the `query` directory
-   * @param name The name of the query to read
-   */
-  private _readQuery(name: string) {
-    return fs.readFileSync(
-      path.join(__dirname, './query', `${name}.graphql`),
-      'utf8'
-    );
-  }
-
-  /**
-   * Reads a mutation from the `mutation` directory
-   * @param name The name of the mutation to read
-   */
-  private _readMutation(name: string) {
-    return fs.readFileSync(
-      path.join(__dirname, './mutation', `${name}.graphql`),
-      'utf8'
-    );
+  private _request<T extends Request>(
+    req: T,
+    params: RequestParams<T>
+  ): Promise<Response<T>> {
+    return this.octokit.graphql(this.requests[req], params);
   }
 
   /**
@@ -167,17 +64,12 @@ export class Octo {
     projectOwner: string,
     projectNumber: number,
     fieldName: string
-  ): Promise<
-    RawGetFieldResponse['data']['repositoryOwner']['projectV2']['field']
-  > {
-    const response = await this.octokit.graphql<RawGetFieldResponse>(
-      this.queries.getField,
-      {
-        owner: projectOwner,
-        projectNumber,
-        fieldName,
-      }
-    );
+  ) {
+    const response = await this._request('getField', {
+      owner: projectOwner,
+      projectNumber,
+      fieldName,
+    });
 
     const field = response.data.repositoryOwner.projectV2.field;
     if (!field)
@@ -198,12 +90,9 @@ export class Octo {
     resourceUrl: string,
     projectId: string
   ): Promise<FieldsResult> {
-    const response = await this.octokit.graphql<RawGetFieldValuesResponse>(
-      this.queries.getFieldValues,
-      {
-        resourceUrl,
-      }
-    );
+    const response = await this._request('getFieldValues', {
+      resourceUrl,
+    });
 
     const projectNode = response.data.resource.projectItems.nodes.find(
       node => node.project.id === projectId
@@ -263,13 +152,10 @@ export class Octo {
    * @param projectId The ID of the project
    * @returns The item ID
    */
-  async getItemId(resourceUrl: string, projectId: string): Promise<string> {
-    const response = await this.octokit.graphql<RawGetItemIdResponse>(
-      this.queries.getItemId,
-      {
-        resourceUrl,
-      }
-    );
+  async getItemId(resourceUrl: string, projectId: string) {
+    const response = await this._request('getItemId', {
+      resourceUrl,
+    });
 
     const projectNode = response.data.resource.projectItems.nodes.find(
       node => node.project.id === projectId
@@ -288,23 +174,17 @@ export class Octo {
    * @param projectNumber The number of the project
    * @returns The project ID
    */
-  async getProjectId(
-    projectOwner: string,
-    projectNumber: number
-  ): Promise<string> {
-    const response = await this.octokit.graphql<RawGetProjectIdResponse>(
-      this.queries.getProjectId,
-      {
-        owner: projectOwner,
-        number: projectNumber,
-      }
-    );
+  async getProjectId(projectOwner: string, projectNumber: number) {
+    const response = await this._request('getProjectId', {
+      owner: projectOwner,
+      number: projectNumber,
+    });
 
     return response.data.repositoryOwner.projectV2.id;
   }
 
   async clearFieldValue(projectId: string, itemId: string, fieldId: string) {
-    await this.octokit.graphql(this.mutations.clearItemFieldValue, {
+    await this._request('clearItemFieldValue', {
       projectId,
       itemId,
       fieldId,
@@ -325,7 +205,7 @@ export class Octo {
       | {date: string}
       | {singleSelectOptionId: string}
   ) {
-    await this.octokit.graphql(this.mutations.setItemFieldValue, {
+    await this._request('setItemFieldValue', {
       projectId,
       itemId,
       fieldId,

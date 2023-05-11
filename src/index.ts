@@ -1,7 +1,8 @@
 import * as core from '@actions/core';
 import {getInputs, logOutputs, setOutput} from './io';
-import {FieldDataType, Octo} from './api';
+import {Octo} from './api';
 import {debug, stringifyCSVArray} from './utils';
+import {FieldDataType} from './api/generated';
 
 const supportedDataTypes = [
   'TEXT',
