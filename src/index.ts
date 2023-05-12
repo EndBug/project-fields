@@ -75,49 +75,54 @@ const supportedDataTypes = [
             'Fields/values length mismatch. This should never happen.'
           );
 
-        if (field.dataType === 'NUMBER' && Number.isNaN(Number(value)))
-          throw new Error(
-            `Field ${field.name} has data type ${field.dataType}, but the value is not a number.`
-          );
-
-        let singleSelectOptionId: string;
-        if (field.dataType === 'SINGLE_SELECT') {
-          const option = field.options.find(o => o.name === value);
-          if (!option)
+        if (value === '') {
+          await octokit.clearFieldValue(projectId, itemId, field.id);
+          core.info(`Field ${field.name} cleared correctly.`);
+        } else {
+          if (field.dataType === 'NUMBER' && Number.isNaN(Number(value)))
             throw new Error(
-              `Field ${field.name} has data type ${field.dataType}, but the value is not a valid option.`
+              `Field ${field.name} has data type ${field.dataType}, but the value is not a number.`
             );
-          singleSelectOptionId = option.id;
+
+          let singleSelectOptionId: string;
+          if (field.dataType === 'SINGLE_SELECT') {
+            const option = field.options.find(o => o.name === value);
+            if (!option)
+              throw new Error(
+                `Field ${field.name} has data type ${field.dataType}, but the value is not a valid option.`
+              );
+            singleSelectOptionId = option.id;
+          }
+
+          const newValue:
+            | Parameters<(typeof octokit)['setFieldValue']>[3]
+            | undefined =
+            field.dataType === 'TEXT'
+              ? {
+                  text: value,
+                }
+              : field.dataType === 'SINGLE_SELECT'
+              ? {
+                  singleSelectOptionId: singleSelectOptionId!,
+                }
+              : field.dataType === 'NUMBER'
+              ? {
+                  number: Number(value),
+                }
+              : field.dataType === 'DATE'
+              ? {
+                  date: value,
+                }
+              : undefined;
+
+          if (!newValue)
+            throw new Error(
+              `Field ${field.name} has an unsupported data type: ${field.dataType}. This should never happen.`
+            );
+
+          await octokit.setFieldValue(projectId, itemId, field.id, newValue);
+          core.info(`Field ${field.name} set correctly.`);
         }
-
-        const newValue:
-          | Parameters<(typeof octokit)['setFieldValue']>[3]
-          | undefined =
-          field.dataType === 'TEXT'
-            ? {
-                text: value,
-              }
-            : field.dataType === 'SINGLE_SELECT'
-            ? {
-                singleSelectOptionId: singleSelectOptionId!,
-              }
-            : field.dataType === 'NUMBER'
-            ? {
-                number: Number(value),
-              }
-            : field.dataType === 'DATE'
-            ? {
-                date: value,
-              }
-            : undefined;
-
-        if (!newValue)
-          throw new Error(
-            `Field ${field.name} has an unsupported data type: ${field.dataType}. This should never happen.`
-          );
-
-        await octokit.setFieldValue(projectId, itemId, field.id, newValue);
-        core.info(`Field ${field.name} set correctly.`);
       })
     );
     core.info('All fields have been updated correctly.');
