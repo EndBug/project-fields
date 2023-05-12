@@ -31,7 +31,7 @@ export function debug(item: unknown) {
 export function stringifyCSVArray(
   values: (string | number | boolean | undefined)[]
 ): string {
-  return csvStringify([values]);
+  return csvStringify([values]).trim();
 }
 
 /** Parses a CSV string containing one row into an array of strings */
