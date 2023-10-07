@@ -108,9 +108,12 @@ export async function getInputs(): Promise<Inputs> {
   // #endregion
 
   // #region values
+  core.info('BV DEBUG: raw.values =' + raw.values);
+
   if (raw.values) {
     try {
       inputs.values = parseCSVArray(raw.values);
+      core.info('BV DEBUG: inputs.values =' + inputs.values);
     } catch (e) {
       throw new Error(`values: ${e}`);
     }
