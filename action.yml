@@ -2,6 +2,9 @@ name: Project Fields
 description: A GitHub Action to interact with project fields
 
 inputs:
+  operation: 
+    description: 'The type of field operation. Valid options are "get", "set", "clear"'
+    required: true
   fields:
     description: 'A comma-separated list of fields to get or update'
     required: true
