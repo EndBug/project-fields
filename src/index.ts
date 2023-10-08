@@ -227,6 +227,13 @@ const supportedDataTypes = [
       core.endGroup();
       break;
     }
+    default: {
+      core.startGroup("DEBUG");
+      core.info("switch (inputs.operation) did not work...in the default")
+      core.endGroup();
+
+      break;
+    }
   }
 
   // if (inputs.values) {
