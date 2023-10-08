@@ -15,10 +15,6 @@ const supportedDataTypes = [
   core.startGroup('Checking inputs...');
   const inputs = await getInputs();
   core.info('Inputs are valid.');
-  core.info('inputs.operation = ' + inputs.operation);
-  core.info('OperationType.GET_FIELDS = ' + OperationType.GET_FIELDS);
-  core.info('OperationType.SET_FIELDS = ' + OperationType.SET_FIELDS);
-  core.info('OperationType.CLEAR_FIELDS = ' + OperationType.CLEAR_FIELDS);
   
   debug(inputs);
   core.endGroup();
@@ -111,41 +107,7 @@ const supportedDataTypes = [
         );
 
       if (inputs.operation === OperationType.SET_FIELDS) {
-        if (inputs.values) {
-          // core.startGroup('Setting field values...');
-  
-          // const itemId = await octokit.getItemId(inputs.resource.url, projectId);
-          // core.info('Item ID fetched correctly.');
-          // debug(itemId);
-      
-          // const fields = await Promise.all(
-          //   inputs.fields.map(async fieldName => {
-          //     const field = await octokit.getField(
-          //       inputs.project.owner,
-          //       inputs.project.number,
-          //       fieldName
-          //     );
-          //     core.info(`Field ${fieldName} fetched correctly.`);
-          //     debug(field);
-          //     return {
-          //       name: fieldName,
-          //       ...field,
-          //     };
-          //   })
-          // );
-          // core.info('All fields fetched correctly.');
-          // debug(fields);
-      
-          // const invalidFields = fields.filter(
-          //   f => !supportedDataTypes.includes(f.dataType)
-          // );
-          // if (invalidFields.length > 0)
-          //   throw new Error(
-          //     `The following fields are not supported: ${invalidFields
-          //       .map(f => `${f.name} (${f.dataType})`)
-          //       .join(', ')}`
-          //   );
-    
+        if (inputs.values) {    
           await Promise.all(
             inputs.values.map(async (value, i) => {
               const field = fields[i];
@@ -156,7 +118,7 @@ const supportedDataTypes = [
       
               // If given a list of values to set to cooresponding fields, it's entirely possilble
               // one of the values is an empty string. Problem arises if the values input is a single empty
-              // string, which is/was to single to clear the specfied fields. However, this will not be parsed
+              // string, which is/was to signal to clear the specfied fields. However, this will not be parsed
               // as it's simply viewed as an emtpy string and the orginal logic check of "if (input.values)" to set/clear
               // will fail in the single '' input values case and "getting" values instead of clearing them.
               if (value === '') {
