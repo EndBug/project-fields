@@ -15,6 +15,7 @@ const supportedDataTypes = [
   core.startGroup('Checking inputs...');
   const inputs = await getInputs();
   core.info('Inputs are valid.');
+  core.info('inputs.operation = ' + inputs.operation);
   debug(inputs);
   core.endGroup();
 
