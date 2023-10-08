@@ -16,6 +16,10 @@ const supportedDataTypes = [
   const inputs = await getInputs();
   core.info('Inputs are valid.');
   core.info('inputs.operation = ' + inputs.operation);
+  core.info('OperationType.GET_FIELDS = ' + OperationType.GET_FIELDS);
+  core.info('OperationType.SET_FIELDS = ' + OperationType.SET_FIELDS);
+  core.info('OperationType.CLEAR_FIELDS = ' + OperationType.CLEAR_FIELDS);
+  
   debug(inputs);
   core.endGroup();
 
