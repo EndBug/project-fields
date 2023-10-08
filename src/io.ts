@@ -59,7 +59,7 @@ export async function getInputs(): Promise<Inputs> {
   if (operation === null)
     throw new Error('Specified operation is invalid');
 
-  inputs.operation = operation;
+  inputs.operation = operation as OperationType;
   // #endregion
 
   // #region fields
@@ -151,6 +151,7 @@ export async function getInputs(): Promise<Inputs> {
 function stringToEnum(value: string): OperationType | null {
   const uc: string = value.toUpperCase()
   if (Object.values(OperationType).findIndex(x => x === uc) >= 0) {
+    core.info("stringToEnum value = " + value)
     return value as OperationType
   }
   return null
