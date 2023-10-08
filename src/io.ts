@@ -151,8 +151,7 @@ export async function getInputs(): Promise<Inputs> {
 function stringToEnum(value: string): OperationType | null {
   const uc: string = value.toUpperCase()
   if (Object.values(OperationType).findIndex(x => x === uc) >= 0) {
-    core.info("stringToEnum value = " + value)
-    return value as OperationType
+    return uc as OperationType
   }
   return null
 }
