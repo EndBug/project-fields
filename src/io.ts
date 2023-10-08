@@ -142,7 +142,7 @@ export async function getInputs(): Promise<Inputs> {
   return inputs;
 }
 
-// TypeScript doest not have anyting like ENUM.TryParse and does not throw an
+// TypeScript does not have anyting like ENUM.TryParse and does not throw an
 // error when trying to cast a string to the enum. Created stringToEnum as a workaround
 // to convert a string to an enum. If fails, returns a null.
 function stringToEnum(value: string): OperationType | null {
