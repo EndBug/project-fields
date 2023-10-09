@@ -54,7 +54,7 @@ export async function getInputs(): Promise<Inputs> {
   };
   const inputs = {} as Inputs;
 
-  // #region fields
+  // #region operation
   const operation: OperationType | null = stringToEnum(raw.operation);
   if (operation === null)
     throw new Error('Specified operation is invalid');
