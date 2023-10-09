@@ -172,6 +172,8 @@ const supportedDataTypes = [
             })
           );
           core.info('All fields have been updated correctly.');
+
+          // endGroup for core.startGroup('Setting field values...');
           core.endGroup();
       
           core.startGroup('Setting outputs...');
@@ -188,9 +190,11 @@ const supportedDataTypes = [
           await octokit.clearFieldValue(projectId, itemId, field.id);
           core.info(`Field ${field.name} cleared correctly.`);  
         }));
+
+        // endGroup for core.startGroup('Clearing field values...');
+        core.endGroup();        
       }
 
-      core.endGroup();
       break;
     }
   }
