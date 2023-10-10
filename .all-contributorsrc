@@ -18,8 +18,18 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "ben-v",
+      "name": "Ben",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8211835?v=4",
+      "profile": "https://github.com/ben-v",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
-  "linkToUsage": true
+  "linkToUsage": true,
+  "commitType": "docs"
 }
