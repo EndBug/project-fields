@@ -1,7 +1,15 @@
 import * as core from '@actions/core';
 import {parseCSVArray} from './utils';
 
+export enum OperationType {
+  GET_FIELDS = 'GET',
+  SET_FIELDS = 'SET',
+  CLEAR_FIELDS = 'CLEAR',
+}
+
 interface RawInputs {
+  operation: string;
+
   fields: string;
   project_url: string;
 
@@ -11,6 +19,8 @@ interface RawInputs {
 }
 
 interface Inputs {
+  operation: OperationType;
+
   fields: string[];
   project: {
     owner: string;
@@ -35,6 +45,7 @@ interface Outputs {
 
 export async function getInputs(): Promise<Inputs> {
   const raw: RawInputs = {
+    operation: core.getInput('operation', {required: true}),
     fields: core.getInput('fields', {required: true}),
     project_url: core.getInput('project_url', {required: true}),
     github_token: core.getInput('github_token', {required: true}),
@@ -42,6 +53,14 @@ export async function getInputs(): Promise<Inputs> {
     values: core.getInput('values', {required: false}),
   };
   const inputs = {} as Inputs;
+
+  // #region operation
+  const operation: OperationType | null = stringToEnum(raw.operation);
+  if (operation === null)
+    throw new Error('Specified operation is invalid');
+
+  inputs.operation = operation as OperationType;
+  // #endregion
 
   // #region fields
   try {
@@ -121,6 +140,17 @@ export async function getInputs(): Promise<Inputs> {
   // #endregion
 
   return inputs;
+}
+
+// TypeScript does not have anyting like ENUM.TryParse and does not throw an
+// error when trying to cast a string to the enum. Created stringToEnum as a workaround
+// to convert a string to an enum. If fails, returns a null.
+function stringToEnum(value: string): OperationType | null {
+  const uc: string = value.toUpperCase()
+  if (Object.values(OperationType).findIndex(x => x === uc) >= 0) {
+    return uc as OperationType
+  }
+  return null
 }
 
 const outputs = {} as Outputs;
