@@ -55,9 +55,8 @@ export async function getInputs(): Promise<Inputs> {
   const inputs = {} as Inputs;
 
   // #region operation
-  const operation: OperationType | null = stringToEnum(raw.operation);
-  if (operation === null)
-    throw new Error('Specified operation is invalid');
+  const operation: OperationType | null = parseOperationType(raw.operation);
+  if (operation === null) throw new Error('Specified operation is invalid');
 
   inputs.operation = operation as OperationType;
   // #endregion
@@ -142,15 +141,13 @@ export async function getInputs(): Promise<Inputs> {
   return inputs;
 }
 
-// TypeScript does not have anyting like ENUM.TryParse and does not throw an
-// error when trying to cast a string to the enum. Created stringToEnum as a workaround
-// to convert a string to an enum. If fails, returns a null.
-function stringToEnum(value: string): OperationType | null {
-  const uc: string = value.toUpperCase()
+/** Converts a string into an `OperationType` */
+function parseOperationType(value: string): OperationType | null {
+  const uc: string = value.toUpperCase();
   if (Object.values(OperationType).findIndex(x => x === uc) >= 0) {
-    return uc as OperationType
+    return uc as OperationType;
   }
-  return null
+  return null;
 }
 
 const outputs = {} as Outputs;
