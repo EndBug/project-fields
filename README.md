@@ -19,9 +19,12 @@ Here's the complete list of inputs for this action, also available in the [actio
 For a minimal/typical usage, check out the [examples](#examples) section.
 
 ```yml
-- uses: EndBug/project-fields@v1
+- uses: EndBug/project-fields@v2
   with:
     # ⬇️ Required inputs ⬇️
+
+    # The type of field operation. Valid options are "get", "set", "clear"
+    operation: get
 
     # A comma-separated list of fields to get or set
     # See the FAQ section for a list of supported field types
@@ -43,8 +46,6 @@ For a minimal/typical usage, check out the [examples](#examples) section.
 
     # A comma-separated list of values to update the fields with
     # The list must have the same length as the fields one, since they have to match up
-    # Every empty value will clear the corresponding field
-    # If the list is empty, the action will only get the fields, without updating them
     # Default: ''
     values: abc,123,2000-10-30,option
 ```
@@ -90,9 +91,10 @@ on: [issues, pull_request]
 
 # ...
 
-- uses: EndBug/project-fields@v1
+- uses: EndBug/project-fields@v2
   id: fields
   with:
+    operation: get
     fields: text,number,date,select
     github_token: ${{ secrets.PROJECT_PAT }}
     project_url: https://github.com/OWNER/REPO/issues/123
@@ -111,12 +113,28 @@ on: [issues, pull_request]
   id: script
   run: # ...
 
-- uses: EndBug/project-fields@v1
+- uses: EndBug/project-fields@v2
   with:
+    operation: set
     fields: first,second
     github_token: ${{ secrets.PROJECT_PAT }}
     project_url: https://github.com/OWNER/REPO/issues/123
     values: ${{ steps.script.outputs.a }},${{ steps.script.outputs.b }}
+```
+
+### Clear fields
+
+```yml
+on: [issues, pull_request]
+
+# ...
+
+- uses: EndBug/project-fields@v2
+  with:
+    operation: clear
+    fields: first,second
+    github_token: ${{ secrets.PROJECT_PAT }}
+    project_url: https://github.com/OWNER/REPO/issues/123
 ```
 
 ## Contributors ✨
