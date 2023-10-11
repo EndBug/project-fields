@@ -15,7 +15,6 @@ const supportedDataTypes = [
   core.startGroup('Checking inputs...');
   const inputs = await getInputs();
   core.info('Inputs are valid.');
-  
   debug(inputs);
   core.endGroup();
 
@@ -33,10 +32,6 @@ const supportedDataTypes = [
   debug(projectId);
   core.endGroup();
 
-  // If input 'values' is set to a single empty string, i.e. '', in order to clear the specified fields, the logical
-  // evaluation of "if (inputs.values)" will fail as the raw input values is in effect an empty string and will not be parsed into an array.
-  // To get around this, added the 'operation' type to explicitly state the type of operation, i.e. get, set or clear. If clear is specified
-  // any inputs assigned to "values" are ignored.
   switch (inputs.operation) {
     case OperationType.GET_FIELDS: {
       core.startGroup('Getting current card field values...');
@@ -47,7 +42,6 @@ const supportedDataTypes = [
       core.info('Card field values fetched correctly.');
       debug(fieldRecords);
       core.endGroup();
-  
       core.startGroup('Setting outputs...');
       const results = inputs.fields.map(field => {
         if (fieldRecords[field]?.unsupported)
@@ -59,7 +53,7 @@ const supportedDataTypes = [
       const csv = stringifyCSVArray(results.map(r => r?.value));
       core.info('CSV output generated correctly.');
       debug(csv);
-  
+
       setOutput('values', csv);
       core.info('Output set correctly.');
       core.endGroup();
@@ -77,7 +71,7 @@ const supportedDataTypes = [
       const itemId = await octokit.getItemId(inputs.resource.url, projectId);
       core.info('Item ID fetched correctly.');
       debug(itemId);
-  
+
       const fields = await Promise.all(
         inputs.fields.map(async fieldName => {
           const field = await octokit.getField(
@@ -107,7 +101,7 @@ const supportedDataTypes = [
         );
 
       if (inputs.operation === OperationType.SET_FIELDS) {
-        if (inputs.values) {    
+        if (inputs.values) {
           await Promise.all(
             inputs.values.map(async (value, i) => {
               const field = fields[i];
@@ -115,12 +109,6 @@ const supportedDataTypes = [
                 throw new Error(
                   'Fields/values length mismatch. This should never happen.'
                 );
-      
-              // If given a list of values to set to cooresponding fields, it's entirely possilble
-              // one of the values is an empty string. Problem arises if the values input is a single empty
-              // string, which is/was to signal to clear the specfied fields. However, this will not be parsed
-              // as it's simply viewed as an emtpy string and the orginal logic check of "if (input.values)" to set/clear
-              // will fail in the single '' input values case and "getting" values instead of clearing them.
               if (value === '') {
                 await octokit.clearFieldValue(projectId, itemId, field.id);
                 core.info(`Field ${field.name} cleared correctly.`);
@@ -129,7 +117,6 @@ const supportedDataTypes = [
                   throw new Error(
                     `Field ${field.name} has data type ${field.dataType}, but the value is not a number.`
                   );
-      
                 let singleSelectOptionId: string;
                 if (field.dataType === 'SINGLE_SELECT') {
                   const option = field.options.find(o => o.name === value);
@@ -139,7 +126,6 @@ const supportedDataTypes = [
                     );
                   singleSelectOptionId = option.id;
                 }
-      
                 const newValue:
                   | Parameters<(typeof octokit)['setFieldValue']>[3]
                   | undefined =
@@ -160,39 +146,42 @@ const supportedDataTypes = [
                         date: value,
                       }
                     : undefined;
-      
                 if (!newValue)
                   throw new Error(
                     `Field ${field.name} has an unsupported data type: ${field.dataType}. This should never happen.`
                   );
-      
-                await octokit.setFieldValue(projectId, itemId, field.id, newValue);
+
+                await octokit.setFieldValue(
+                  projectId,
+                  itemId,
+                  field.id,
+                  newValue
+                );
                 core.info(`Field ${field.name} set correctly.`);
               }
             })
           );
           core.info('All fields have been updated correctly.');
 
-          // endGroup for core.startGroup('Setting field values...');
           core.endGroup();
-      
+
           core.startGroup('Setting outputs...');
           const csv = stringifyCSVArray(inputs.values);
           core.info('CSV output generated correctly.');
           debug(csv);
-      
           setOutput('values', csv);
           core.info('Output set correctly.');
           core.endGroup();
         }
       } else {
-        await Promise.all(fields.map(async (field) => {
-          await octokit.clearFieldValue(projectId, itemId, field.id);
-          core.info(`Field ${field.name} cleared correctly.`);  
-        }));
+        await Promise.all(
+          fields.map(async field => {
+            await octokit.clearFieldValue(projectId, itemId, field.id);
+            core.info(`Field ${field.name} cleared correctly.`);
+          })
+        );
 
-        // endGroup for core.startGroup('Clearing field values...');
-        core.endGroup();        
+        core.endGroup();
       }
 
       break;
