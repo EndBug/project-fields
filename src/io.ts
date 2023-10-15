@@ -72,7 +72,7 @@ export async function getInputs(): Promise<Inputs> {
 
   // #region project_url
   const PROJECT_URL_REGEX =
-    /^.*github.com\/(?<type>users|orgs)\/(?<owner>[0-9a-zA-Z-]+)\/projects\/(?<number>\d+)\/?(views\/(?<view>\d+))?\/?$/;
+    /^.*github.com\/(?<type>users|orgs)\/(?<owner>[\d\w-._]+)\/projects\/(?<number>\d+)\/?(views\/(?<view>\d+))?\/?$/;
   const projectMatchGroups = raw.project_url.match(PROJECT_URL_REGEX)?.groups;
 
   if (!projectMatchGroups)
@@ -99,7 +99,7 @@ export async function getInputs(): Promise<Inputs> {
 
   // #region resource_url
   const RESOURCE_URL_REGEX =
-    /^.*github.com\/(?<owner>[0-9a-zA-Z-]+)\/(?<repo>[0-9a-zA-Z-]+)\/(?<type>pull|issues)\/(?<number>\d+)\/?$/;
+    /^.*github.com\/(?<owner>[\d\w-._]+)\/(?<repo>[\d\w-._]+)\/(?<type>pull|issues)\/(?<number>\d+)\/?$/;
   const resourceMatchGroups =
     raw.resource_url.match(RESOURCE_URL_REGEX)?.groups;
 
