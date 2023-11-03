@@ -40,6 +40,6 @@
     "typescript": "^5.2.2"
   },
   "devDependencies": {
-    "eslint-plugin-prettier": "^5.0.0"
+    "eslint-plugin-prettier": "^5.0.1"
   }
 }
