@@ -36,7 +36,7 @@
     "csv": "^6.3.6",
     "gts": "^5.0.1",
     "husky": "^8.0.3",
-    "ts-node": "^10.9.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   },
   "devDependencies": {
