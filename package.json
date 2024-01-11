@@ -33,7 +33,7 @@
     "@types/node": "^20.10.6",
     "@vercel/ncc": "^0.38.1",
     "all-contributors-cli": "^6.26.1",
-    "csv": "^6.3.5",
+    "csv": "^6.3.6",
     "gts": "^5.0.1",
     "husky": "^8.0.3",
     "ts-node": "^10.9.1",
