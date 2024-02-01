@@ -35,7 +35,7 @@
     "all-contributors-cli": "^6.26.1",
     "csv": "^6.3.6",
     "gts": "^5.0.1",
-    "husky": "^8.0.3",
+    "husky": "^9.0.10",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   },
