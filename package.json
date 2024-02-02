@@ -10,7 +10,7 @@
     "clean": "gts clean",
     "fix": "gts fix",
     "generate": "ts-node scripts/graphQL-types.ts && npm run fix -- src/api/generated.ts",
-    "prepare": "husky install",
+    "prepare": "husky",
     "posttest": "npm run lint",
     "prebuild": "npm run clean && npm run generate"
   },
