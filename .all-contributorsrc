@@ -27,6 +27,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "yarosz",
+      "name": "Nicolas Yarosz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3142961?v=4",
+      "profile": "http://yarosz.com",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
