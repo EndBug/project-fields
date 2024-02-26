@@ -1,6 +1,6 @@
 {
   "name": "project-fields",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "A GitHub Action to interact with project fields",
   "main": "build/index.js",
   "private": "true",
