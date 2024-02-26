@@ -2,7 +2,7 @@ name: Project Fields
 description: A GitHub Action to interact with project fields
 
 inputs:
-  operation: 
+  operation:
     description: 'The type of field operation. Valid options are "get", "set", "clear"'
     required: true
   fields:
@@ -28,7 +28,7 @@ outputs:
     description: 'The current values of the fields'
 
 runs:
-  using: node16
+  using: node20
   main: build/index.js
 
 branding:
