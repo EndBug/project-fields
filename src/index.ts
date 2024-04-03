@@ -134,18 +134,18 @@ const supportedDataTypes = [
                         text: value,
                       }
                     : field.dataType === 'SINGLE_SELECT'
-                    ? {
-                        singleSelectOptionId: singleSelectOptionId!,
-                      }
-                    : field.dataType === 'NUMBER'
-                    ? {
-                        number: Number(value),
-                      }
-                    : field.dataType === 'DATE'
-                    ? {
-                        date: value,
-                      }
-                    : undefined;
+                      ? {
+                          singleSelectOptionId: singleSelectOptionId!,
+                        }
+                      : field.dataType === 'NUMBER'
+                        ? {
+                            number: Number(value),
+                          }
+                        : field.dataType === 'DATE'
+                          ? {
+                              date: value,
+                            }
+                          : undefined;
                 if (!newValue)
                   throw new Error(
                     `Field ${field.name} has an unsupported data type: ${field.dataType}. This should never happen.`
