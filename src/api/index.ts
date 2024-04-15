@@ -19,7 +19,7 @@ type FieldsResult = Record<
   string,
   | {
       value: string | number | undefined;
-      type: 'TEXT' | 'SINGLE_SELECT' | 'NUMBER' | 'DATE';
+      type: 'TEXT' | 'SINGLE_SELECT' | 'NUMBER' | 'DATE' | 'ITERATION';
       id: string;
       unsupported?: false;
     }
@@ -150,6 +150,13 @@ export class Octo {
         case 'DATE':
           result[node.field.name] = {
             value: node.date,
+            type: node.field.dataType,
+            id: node.field.id,
+          };
+          break;
+        case 'ITERATION':
+          result[node.field.name] = {
+            value: node.iteration,
             type: node.field.dataType,
             id: node.field.id,
           };

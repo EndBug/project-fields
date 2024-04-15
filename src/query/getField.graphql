@@ -32,5 +32,15 @@ query getField($owner: String!, $projectNumber: Int!, $fieldName: String!) {
         }
       }
     }
+    ... on ProjectV2IterationField {
+      id
+      name
+      configuration {
+        iterations {
+          startDate
+          id
+        }
+      }
+    }
   }
 }

@@ -9,6 +9,7 @@ const supportedDataTypes = [
   'SINGLE_SELECT',
   'NUMBER',
   'DATE',
+  'ITERATION'
 ] as FieldDataType[];
 
 (async () => {
