@@ -1,6 +1,6 @@
 import * as core from '@actions/core';
-import {parse as csvParse} from 'csv-parse/sync';
-import {stringify as csvStringify} from 'csv-stringify/sync';
+import {parse as csvParse} from 'csv/sync';
+import {stringify as csvStringify} from 'csv/sync';
 
 /** Excludes `{}` from a `Partial` type */
 export type AtLeastOne<T, U = {[K in keyof T]: Pick<T, K>}> = Partial<T> &
