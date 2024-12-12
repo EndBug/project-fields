@@ -14,7 +14,17 @@ export interface getField {
           }
         | {
             id: string;
-            dataType: Exclude<FieldDataType, 'SINGLE_SELECT'>;
+            dataType: 'ITERATION';
+            configuration: {
+              iterations: {
+                id: string;
+                title: string;
+              }[];
+            };
+          }
+        | {
+            id: string;
+            dataType: Exclude<FieldDataType, 'SINGLE_SELECT' | 'ITERATION'>;
           };
     };
   };
@@ -42,6 +52,7 @@ export interface getFieldValues {
                 name?: string;
                 number?: number;
                 date?: string;
+                title?: string;
               }
           )[];
         };
