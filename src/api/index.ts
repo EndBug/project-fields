@@ -19,7 +19,7 @@ type FieldsResult = Record<
   string,
   | {
       value: string | number | undefined;
-      type: 'TEXT' | 'SINGLE_SELECT' | 'NUMBER' | 'DATE';
+      type: 'TEXT' | 'SINGLE_SELECT' | 'NUMBER' | 'DATE' | 'ITERATION';
       id: string;
       unsupported?: false;
     }
@@ -154,6 +154,13 @@ export class Octo {
             id: node.field.id,
           };
           break;
+        case 'ITERATION':
+          result[node.field.name] = {
+            value: node.title,
+            type: node.field.dataType,
+            id: node.field.id,
+          };
+          break;
         default:
           result[node.field.name] = {
             id: node.field.id,
@@ -230,6 +237,7 @@ export class Octo {
         }
       | {date: string}
       | {singleSelectOptionId: string}
+      | {iterationId: string}
   ) {
     await this._request('setItemFieldValue', {
       projectId,

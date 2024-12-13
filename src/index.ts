@@ -9,6 +9,7 @@ const supportedDataTypes = [
   'SINGLE_SELECT',
   'NUMBER',
   'DATE',
+  'ITERATION',
 ] as FieldDataType[];
 
 (async () => {
@@ -126,6 +127,18 @@ const supportedDataTypes = [
                     );
                   singleSelectOptionId = option.id;
                 }
+                let iterationId: string;
+                if (field.dataType === 'ITERATION') {
+                  const allIterations = field.configuration.iterations.concat(
+                    field.configuration.completedIterations
+                  );
+                  const iteration = allIterations.find(o => o.title === value);
+                  if (!iteration)
+                    throw new Error(
+                      `Field ${field.name} has data type ${field.dataType}, but the value is not a valid iteration.`
+                    );
+                  iterationId = iteration.id;
+                }
                 const newValue:
                   | Parameters<(typeof octokit)['setFieldValue']>[3]
                   | undefined =
@@ -145,7 +158,11 @@ const supportedDataTypes = [
                           ? {
                               date: value,
                             }
-                          : undefined;
+                          : field.dataType === 'ITERATION'
+                            ? {
+                                iterationId: iterationId!,
+                              }
+                            : undefined;
                 if (!newValue)
                   throw new Error(
                     `Field ${field.name} has an unsupported data type: ${field.dataType}. This should never happen.`
