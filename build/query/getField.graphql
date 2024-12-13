@@ -20,6 +20,10 @@ query getField($owner: String!, $projectNumber: Int!, $fieldName: String!) {
                 id
                 title
               }
+              completedIterations {
+                id
+                title
+              }
             }
           }
         }
@@ -42,6 +46,10 @@ query getField($owner: String!, $projectNumber: Int!, $fieldName: String!) {
             id
             configuration {
               iterations {
+                id
+                title
+              }
+              completedIterations {
                 id
                 title
               }

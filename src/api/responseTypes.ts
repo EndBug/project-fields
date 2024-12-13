@@ -20,6 +20,10 @@ export interface getField {
                 id: string;
                 title: string;
               }[];
+              completedIterations: {
+                id: string;
+                title: string;
+              }[];
             };
           }
         | {

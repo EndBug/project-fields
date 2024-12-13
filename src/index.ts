@@ -129,9 +129,10 @@ const supportedDataTypes = [
                 }
                 let iterationId: string;
                 if (field.dataType === 'ITERATION') {
-                  const iteration = field.configuration.iterations.find(
-                    o => o.title === value
+                  const allIterations = field.configuration.iterations.concat(
+                    field.configuration.completedIterations
                   );
+                  const iteration = allIterations.find(o => o.title === value);
                   if (!iteration)
                     throw new Error(
                       `Field ${field.name} has data type ${field.dataType}, but the value is not a valid iteration.`
