@@ -151,6 +151,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/EndBug"><img src="https://avatars.githubusercontent.com/u/26386270?v=4?s=100" width="100px;" alt="Federico Grandi"/><br /><sub><b>Federico Grandi</b></sub></a><br /><a href="https://github.com/EndBug/project-fields/commits?author=EndBug" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/ben-v"><img src="https://avatars.githubusercontent.com/u/8211835?v=4?s=100" width="100px;" alt="Ben"/><br /><sub><b>Ben</b></sub></a><br /><a href="https://github.com/EndBug/project-fields/commits?author=ben-v" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://yarosz.com"><img src="https://avatars.githubusercontent.com/u/3142961?v=4?s=100" width="100px;" alt="Nicolas Yarosz"/><br /><sub><b>Nicolas Yarosz</b></sub></a><br /><a href="#maintenance-yarosz" title="Maintenance">🚧</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/kjswartz"><img src="https://avatars.githubusercontent.com/u/9609631?v=4?s=100" width="100px;" alt="Kyle Swartz"/><br /><sub><b>Kyle Swartz</b></sub></a><br /><a href="https://github.com/EndBug/project-fields/commits?author=kjswartz" title="Code">💻</a></td>
     </tr>
   </tbody>
   <tfoot>
