@@ -32,6 +32,9 @@ query getFieldValues($resourceUrl: URI!) {
               ... on ProjectV2ItemFieldNumberValue {
                 number
               }
+              ... on ProjectV2ItemFieldIterationValue {
+                title
+              }
             }
           }
         }
@@ -67,6 +70,9 @@ query getFieldValues($resourceUrl: URI!) {
               }
               ... on ProjectV2ItemFieldNumberValue {
                 number
+              }
+              ... on ProjectV2ItemFieldIterationValue {
+                title
               }
             }
           }

@@ -62,12 +62,13 @@ The action provides only one output:
 
 The action supports the following field data types:
 
-|  Field Type   |   GraphQL Type   |                   Description                   |
-| :-----------: | :--------------: | :---------------------------------------------: |
-|     Text      | [String][String] |         The literal string in the field         |
-|    Number     |  [Float][Float]  |      The string representation of a number      |
-|     Date      |   [Date][Date]   |        The date in the YYYY-MM-DD format        |
-| Single Select | [String][String] | The name of the option (must be an exact match) |
+|  Field Type   |   GraphQL Type   |                      Description                   |
+| :-----------: | :--------------: | :------------------------------------------------: |
+|     Text      | [String][String] |            The literal string in the field         |
+|    Number     |  [Float][Float]  |         The string representation of a number      |
+|     Date      |   [Date][Date]   |           The date in the YYYY-MM-DD format        |
+| Single Select | [String][String] |   The name of the option (must be an exact match)  |
+|   Iteration   | [String][String] | The name of the iteration (must be an exact match) |
 
 [String]: https://docs.github.com/en/graphql/reference/scalars#string
 [Float]: https://docs.github.com/en/graphql/reference/scalars#float
