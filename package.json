@@ -34,7 +34,7 @@
     "@types/node": "^20.14.9",
     "@vercel/ncc": "^0.38.2",
     "all-contributors-cli": "^6.26.1",
-    "csv": "^6.3.10",
+    "csv": "^6.6.3",
     "eslint-plugin-prettier": "^5.2.1",
     "gts": "^7.0.0",
     "husky": "^9.1.6",
